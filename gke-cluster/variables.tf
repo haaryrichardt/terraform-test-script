@@ -17,7 +17,7 @@ variable "nodepool_name" {
 
 variable "machine_type" {
   type = string
-  default = "e2-standard-2"
+  default = "n1-standard-1"
 }
 
 # variable "frontend_static_ip_name" {
