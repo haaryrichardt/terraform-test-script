@@ -30,6 +30,9 @@ resource "google_container_cluster" "optima_cluster" {
       display_name = "master_auth_network"
     }
   }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "google_container_node_pool" "optima_nodepool" {
@@ -56,6 +59,9 @@ resource "google_container_node_pool" "optima_nodepool" {
       "https://www.googleapis.com/auth/service.management.readonly",
       "https://www.googleapis.com/auth/trace.append"
     ]
+  }
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

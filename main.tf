@@ -52,7 +52,7 @@ provider "kubectl" {
 ###################### Cloud Router ######################
 
 resource "google_compute_router" "router" {
-  name    = "optima-devops-router"
+  name    = "optima-devtest-router"
   region  = local.region
   network = "default"
 }
@@ -60,7 +60,7 @@ resource "google_compute_router" "router" {
 ####################### Cloud NAT ########################
 
 resource "google_compute_router_nat" "nat" {
-  name                               = "optima-devops-router-nat"
+  name                               = "optima-devtest-router-nat"
   router                             = google_compute_router.router.name
   region                             = google_compute_router.router.region
   nat_ip_allocate_option             = "AUTO_ONLY"
