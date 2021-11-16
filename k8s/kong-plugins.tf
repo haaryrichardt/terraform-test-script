@@ -35,6 +35,7 @@ spec:
           class: kong
 YAML
 }
+
 resource "kubectl_manifest" "cors" {
     yaml_body = <<YAML
 apiVersion: configuration.konghq.com/v1
@@ -69,6 +70,7 @@ metadata:
 plugin: cors
 YAML
 }
+
 resource "kubectl_manifest" "kong_consumer" {
     yaml_body = <<YAML
 apiVersion: configuration.konghq.com/v1
@@ -82,6 +84,7 @@ credentials:
   - app-admin-jwt
 YAML
 }
+
 resource "kubectl_manifest" "kong_http-logging" {
     yaml_body = <<YAML
 apiVersion: configuration.konghq.com/v1
@@ -94,6 +97,7 @@ config:
 plugin: file-log
 YAML
 }
+
 resource "kubectl_manifest" "kong_jwt-plugin" {
     yaml_body = <<YAML
 apiVersion: configuration.konghq.com/v1
@@ -109,6 +113,7 @@ config:
 plugin: jwt
 YAML
 }
+
 resource "kubectl_manifest" "kong_rate-limiting" {
     yaml_body = <<YAML
 apiVersion: configuration.konghq.com/v1
@@ -122,6 +127,7 @@ config:
 plugin: rate-limiting
 YAML
 }
+
 resource "kubectl_manifest" "kong_secret" {
     yaml_body = <<YAML
 apiVersion: v1

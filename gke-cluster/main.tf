@@ -16,7 +16,7 @@ resource "google_container_cluster" "optima_cluster" {
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false
-    master_ipv4_cidr_block  = "10.10.0.0/28"
+    master_ipv4_cidr_block  = "10.14.0.0/28"
   }
 
   ip_allocation_policy {
@@ -30,9 +30,6 @@ resource "google_container_cluster" "optima_cluster" {
       display_name = "master_auth_network"
     }
   }
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "google_container_node_pool" "optima_nodepool" {
@@ -45,6 +42,7 @@ resource "google_container_node_pool" "optima_nodepool" {
     max_node_count = 5
   }
   node_config {
+    preemptible       = true
     disk_size_gb      = 100
     disk_type         = "pd-standard"
     guest_accelerator = []
@@ -59,9 +57,6 @@ resource "google_container_node_pool" "optima_nodepool" {
       "https://www.googleapis.com/auth/service.management.readonly",
       "https://www.googleapis.com/auth/trace.append"
     ]
-  }
-  lifecycle {
-    create_before_destroy = true
   }
 }
 
