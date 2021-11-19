@@ -11,7 +11,7 @@ resource "google_container_cluster" "optima_cluster" {
   name             = var.cluster_name
   location         = var.zone
   remove_default_node_pool = true
-  initial_node_count = 3
+  initial_node_count = 2
 
   private_cluster_config {
     enable_private_nodes    = true
@@ -36,10 +36,10 @@ resource "google_container_node_pool" "optima_nodepool" {
   name       = var.nodepool_name
   location   = var.zone
   cluster    = google_container_cluster.optima_cluster.name
-  node_count = 3
+  node_count = 2
   autoscaling {
-    min_node_count = 3
-    max_node_count = 5
+    min_node_count = 2
+    max_node_count = 3
   }
   node_config {
     preemptible       = true
