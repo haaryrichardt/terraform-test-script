@@ -12,6 +12,14 @@ terraform {
       source  = "hashicorp/helm"
       version = "~>2.3"
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.6.1"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = "0.7.2"
+    }
   }
 }
 
@@ -42,6 +50,14 @@ provider "helm" {
 }
 
 provider "kubectl" {
+  host  = "https://${data.google_container_cluster.default.endpoint}"
+  token = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(
+    data.google_container_cluster.default.master_auth[0].cluster_ca_certificate,
+  )
+}
+
+provider "kubernetes" {
   host  = "https://${data.google_container_cluster.default.endpoint}"
   token = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(
@@ -85,9 +101,23 @@ module "helm" {
   ]
 }
 
+resource "time_sleep" "wait_5_seconds" {
+  depends_on = [
+    module.helm
+  ]
+  create_duration = "5s"
+}
+
+module "kubernetes" {
+  source     = "./kubernetes"
+  depends_on = [
+    time_sleep.wait_5_seconds
+  ]
+}
+
 module "k8s" {
   source = "./k8s"
   depends_on = [
-    module.helm
+    module.kubernetes
   ]
 }

@@ -7,7 +7,29 @@ terraform {
   }
 }
 
-// Nginx Ingress Controller Helm Chart
+// Cert Manager Helm Chart
+resource "helm_release" "cert_manager" {
+  provider = helm
+  name       = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  chart      = "cert-manager"
+  version    = "v1.5.4"
+
+  namespace        = "cert-manager"
+  create_namespace = true
+
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
+
+  set{
+    name = "extraArgs"
+    value = "{--dns01-recursive-nameservers-only}"
+  }
+}
+
+# // Nginx Ingress Controller Helm Chart
 # resource "helm_release" "nginx_ingress_controller" {
 #   provider = helm
 #   name       = "ingress-nginx"
@@ -30,28 +52,7 @@ resource "helm_release" "kong_ingress_controller" {
   namespace        = "kong"
   create_namespace = true
 
-  # depends_on = [
-  #   helm_release.nginx_ingress_controller
-  # ]
-}
-
-// Cert Manager Helm Chart
-resource "helm_release" "cert_manager" {
-  provider = helm
-  name       = "cert-manager"
-  repository = "https://charts.jetstack.io"
-  chart      = "cert-manager"
-  version    = "v1.5.4"
-
-  namespace        = "cert-manager"
-  create_namespace = true
-
-  set {
-    name  = "installCRDs"
-    value = "true"
-  }
-  
   depends_on = [
-    helm_release.kong_ingress_controller
+    helm_release.cert_manager
   ]
 }
