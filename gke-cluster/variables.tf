@@ -12,12 +12,12 @@ variable "zone" {
 
 variable "nodepool_name" {
   type = string
-  default = "optima-devtest-nodepool"
+  default = "optima-devops-nodepool"
 }
 
 variable "machine_type" {
   type = string
-  default = "n1-standard-1"
+  default = "e2-standard-2"
 }
 
 # variable "frontend_static_ip_name" {

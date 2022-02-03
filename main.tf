@@ -68,7 +68,7 @@ provider "kubernetes" {
 ###################### Cloud Router ######################
 
 resource "google_compute_router" "router" {
-  name    = "optima-devtest-router"
+  name    = "optima-devops-router"
   region  = local.region
   network = "default"
 }
@@ -76,7 +76,7 @@ resource "google_compute_router" "router" {
 ####################### Cloud NAT ########################
 
 resource "google_compute_router_nat" "nat" {
-  name                               = "optima-devtest-router-nat"
+  name                               = "optima-devops-router-nat"
   router                             = google_compute_router.router.name
   region                             = google_compute_router.router.region
   nat_ip_allocate_option             = "AUTO_ONLY"
@@ -109,7 +109,7 @@ resource "time_sleep" "wait_5_seconds" {
 }
 
 module "kubernetes" {
-  source     = "./kubernetes"
+  source = "./kubernetes"
   depends_on = [
     time_sleep.wait_5_seconds
   ]
@@ -120,4 +120,10 @@ module "k8s" {
   depends_on = [
     module.kubernetes
   ]
+}
+
+module "cloudbuild_triggers" {
+  source       = "./cloudbuild-triggers"
+  cluster_name = local.cluster_name
+  zone         = local.zone
 }

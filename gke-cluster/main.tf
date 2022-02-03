@@ -11,12 +11,12 @@ resource "google_container_cluster" "optima_cluster" {
   name             = var.cluster_name
   location         = var.zone
   remove_default_node_pool = true
-  initial_node_count = 2
+  initial_node_count = 3
 
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false
-    master_ipv4_cidr_block  = "10.14.0.0/28"
+    master_ipv4_cidr_block  = "10.14.2.0/28"
   }
 
   ip_allocation_policy {
@@ -36,10 +36,10 @@ resource "google_container_node_pool" "optima_nodepool" {
   name       = var.nodepool_name
   location   = var.zone
   cluster    = google_container_cluster.optima_cluster.name
-  node_count = 2
+  node_count = 3
   autoscaling {
-    min_node_count = 2
-    max_node_count = 3
+    min_node_count = 3
+    max_node_count = 5
   }
   node_config {
     preemptible       = true
