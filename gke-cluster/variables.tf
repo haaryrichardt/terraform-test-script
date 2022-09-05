@@ -12,7 +12,7 @@ variable "zone" {
 
 variable "nodepool_name" {
   type = string
-  default = "optima-devops-nodepool"
+  default = "test-devops-nodepool"
 }
 
 variable "machine_type" {

@@ -5,6 +5,6 @@ resource "kubernetes_secret" "svc-account-secret" {
   }
 
   data = {
-    "wipro-gcp-kubernetes-poc-f67be0dcaaf8.json" = file("wipro-gcp-kubernetes-poc-f67be0dcaaf8.json")
+    "<enter json file name of service account>" = file("<enter json file name of service account>")
   }
 }

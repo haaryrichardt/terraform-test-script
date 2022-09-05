@@ -1,3 +1,5 @@
+# main tf file to load build triggers into native gcp triggers
+# integrate github org details as mentioned below 
 terraform {
   required_providers {
     google = {
@@ -9,14 +11,14 @@ terraform {
 
 resource "google_cloudbuild_trigger" "devops_push_triggers" {
   for_each = {
-      node-push-devops = "Optima-2.0"
+      node-push-devops = "<repo-name>"
   }
   name     = each.key
   github {
-    owner = "Optima-soltuions"
+    owner = "<org name>"
     name  = each.value
     push {
-      branch = "devops-istio"
+      branch = "<branch name>"
     }
   }
   filename = "cloudbuild.yaml"

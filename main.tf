@@ -68,7 +68,7 @@ provider "kubernetes" {
 ###################### Cloud Router ######################
 
 resource "google_compute_router" "router" {
-  name    = "optima-devops-router"
+  name    = "test-devops-router"
   region  = local.region
   network = "default"
 }
@@ -76,7 +76,7 @@ resource "google_compute_router" "router" {
 ####################### Cloud NAT ########################
 
 resource "google_compute_router_nat" "nat" {
-  name                               = "optima-devops-router-nat"
+  name                               = "test-devops-router-nat"
   router                             = google_compute_router.router.name
   region                             = google_compute_router.router.region
   nat_ip_allocate_option             = "AUTO_ONLY"
@@ -88,18 +88,16 @@ module "gke_cluster" {
   cluster_name = local.cluster_name
   region       = local.region
   zone         = local.zone
-  // frontend_static_ip_name = local.frontend_static_ip_name
-  // backend_static_ip_name  = local.backend_static_ip_name
 }
 
 module "helm" {
   source = "./helm"
-  // frontend_static_ip = module.gke_cluster.frontend_ip
-  // backend_static_ip  = module.gke_cluster.backend_ip
   depends_on = [
     google_compute_router_nat.nat
   ]
 }
+
+# sleep time to make sure terraform gets enough time to install helm before going to kubernetes installatiom stage
 
 resource "time_sleep" "wait_5_seconds" {
   depends_on = [

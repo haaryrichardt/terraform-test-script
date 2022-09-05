@@ -29,6 +29,8 @@ resource "helm_release" "cert_manager" {
   }
 }
 
+# Use either NGINX or Kong ingress
+
 # // Nginx Ingress Controller Helm Chart
 # resource "helm_release" "nginx_ingress_controller" {
 #   provider = helm
@@ -41,7 +43,8 @@ resource "helm_release" "cert_manager" {
 #   create_namespace = true
 # }
 
-// Kong Ingress Controller Helm Chart
+# Kong Ingress Controller Helm Chart
+# Kong ingress controller proides API gateway solution to route all traffic into back-end services
 resource "helm_release" "kong_ingress_controller" {
   provider = helm
   name       = "kong"

@@ -7,7 +7,10 @@ terraform {
   }
 }
 
-resource "google_container_cluster" "optima_cluster" {
+# resource to create the test cluster 
+# provide cidr block as mentioned 
+
+resource "google_container_cluster" "test_cluster" {
   name             = var.cluster_name
   location         = var.zone
   remove_default_node_pool = true
@@ -32,10 +35,13 @@ resource "google_container_cluster" "optima_cluster" {
   }
 }
 
-resource "google_container_node_pool" "optima_nodepool" {
+# resource to create the node-pool used by the cluster 
+# machine config, scaling and node count can be dynamically allocated as mentioned below 
+
+resource "google_container_node_pool" "test_nodepool" {
   name       = var.nodepool_name
   location   = var.zone
-  cluster    = google_container_cluster.optima_cluster.name
+  cluster    = google_container_cluster.test_cluster.name
   node_count = 3
   autoscaling {
     min_node_count = 3

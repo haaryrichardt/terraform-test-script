@@ -1,7 +1,7 @@
 locals {
-  cluster_name     = "optima-devops"
-  credentials_file = "wipro-gcp-kubernetes-poc-3e571acc8905.json"
-  project          = "wipro-gcp-kubernetes-poc"
+  cluster_name     = "test-devops"
+  credentials_file = "<enter json file name of service account>"
+  project          = "<enter gcp project name >"
   region           = "us-east4"
 
   zone = "us-east4-b"
