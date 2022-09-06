@@ -111,15 +111,6 @@ resource "google_sql_database_instance" "test" {
   }
 }
 
-# sleep time to make sure terraform gets enough time to install helm before going to kubernetes installatiom stage
-
-resource "time_sleep" "wait_5_seconds" {
-  depends_on = [
-    module.helm
-  ]
-  create_duration = "5s"
-}
-
 module "cloudbuild_triggers" {
   source       = "./cloudbuild-triggers"
   cluster_name = local.cluster_name
