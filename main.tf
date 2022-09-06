@@ -98,6 +98,18 @@ module "helm" {
     google_compute_router_nat.nat
   ]
 }
+  
+resource "google_sql_database_instance" "test" {
+  name             = "test-instance"
+  database_version = "POSTGRES_14"
+  region           = "us-central1"
+
+  settings {
+    # Second-generation instance tiers are based on the machine
+    # type. See argument reference below.
+    tier = "db-f1-micro"
+  }
+}
 
 # sleep time to make sure terraform gets enough time to install helm before going to kubernetes installatiom stage
 
