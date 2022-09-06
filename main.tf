@@ -49,20 +49,22 @@ provider "helm" {
   }
 }
 
-provider "kubectl" {
-  host  = "https://${data.google_container_cluster.default.endpoint}"
-  token = data.google_client_config.default.access_token
-  cluster_ca_certificate = base64decode(
-    data.google_container_cluster.default.master_auth[0].cluster_ca_certificate,
-  )
-}
 
-provider "kubernetes" {
-  host  = "https://${data.google_container_cluster.default.endpoint}"
-  token = data.google_client_config.default.access_token
-  cluster_ca_certificate = base64decode(
-    data.google_container_cluster.default.master_auth[0].cluster_ca_certificate,
-  )
+###################### GKE Ingress ######################
+
+# Static IPv4 address for Ingress Load Balancing
+resource "google_compute_global_address" "ingress-ipv4" {
+  name       = "${var.cluster_name}-ingress-ipv4"
+  ip_version = "IPV4"
+}
+  
+# Forward IPv4 TCP traffic to the HTTP proxy load balancer
+resource "google_compute_global_forwarding_rule" "ingress-http-ipv4" {
+  name        = "${var.cluster_name}-ingress-http-ipv4"
+  ip_address  = google_compute_global_address.ingress-ipv4.address
+  ip_protocol = "TCP"
+  port_range  = "80"
+  target      = google_compute_target_http_proxy.ingress-http.self_link
 }
 
 ###################### Cloud Router ######################
@@ -104,20 +106,6 @@ resource "time_sleep" "wait_5_seconds" {
     module.helm
   ]
   create_duration = "5s"
-}
-
-module "kubernetes" {
-  source = "./kubernetes"
-  depends_on = [
-    time_sleep.wait_5_seconds
-  ]
-}
-
-module "k8s" {
-  source = "./k8s"
-  depends_on = [
-    module.kubernetes
-  ]
 }
 
 module "cloudbuild_triggers" {
