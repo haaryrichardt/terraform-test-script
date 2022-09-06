@@ -22,7 +22,6 @@ terraform {
 #   create_namespace = true
 # }
 
-# Use either NGINX or Kong ingress
 
  // Nginx Ingress Controller Helm Chart
  resource "helm_release" "nginx_server" {
