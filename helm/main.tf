@@ -23,7 +23,7 @@ terraform {
 # }
 
 
- // Nginx Ingress Controller Helm Chart
+ // Nginx Server Helm Chart
  resource "helm_release" "nginx_server" {
    provider = helm
    name       = "nginx-server"
