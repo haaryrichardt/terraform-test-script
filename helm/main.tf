@@ -25,13 +25,13 @@ terraform {
 # Use either NGINX or Kong ingress
 
  // Nginx Ingress Controller Helm Chart
- resource "helm_release" "nginx_ingress_controller" {
+ resource "helm_release" "nginx_server" {
    provider = helm
-   name       = "ingress-nginx"
-   repository = "https://kubernetes.github.io/ingress-nginx"
-   chart      = "ingress-nginx"
-   version    = "3.34.0"
+   name       = "nginx-server"
+   repository = "https://charts.bitnami.com/bitnami"
+   chart      = "bitnami/nginx"
+   version    = "13.2.3"
 
-   namespace        = "nginx-ingress"
+   namespace        = "nginx-server"
    create_namespace = true
  }
